@@ -6,11 +6,20 @@ import React from "react";
 import { FaBug } from "react-icons/fa";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
-import { Box, Container, Flex } from "@radix-ui/themes";
+import {
+  Avatar,
+  Box,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
 
 const NavBar = () => {
   const currentPath = usePathname();
   const { status, data: session } = useSession();
+  // console.log(session);
+
   const links = [
     {
       label: "Dashboard",
@@ -48,7 +57,27 @@ const NavBar = () => {
           </Flex>
           <Box>
             {status === "authenticated" && (
-              <Link href={"/api/auth/signout"}>Sign out</Link>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <Avatar
+                    size={"2"}
+                    radius="full"
+                    src={
+                      "https://lh3.googleusercontent.com/a/ACg8ocILpj_C7myX5h00kzc0M26u9p2EoQiEs6W4edIsNhlpSmvfeQ=s96-c"
+                    }
+                    fallback="?"
+                    className="cursor-pointer"
+                  />
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Label>
+                    <Text size="2">{session.user!.email}</Text>
+                  </DropdownMenu.Label>
+                  <DropdownMenu.Item>
+                    <Link href={"/api/auth/signout"}>Sign out</Link>
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             )}
             {status === "unauthenticated" && (
               <Link href={"/api/auth/signin"}>Sign in</Link>
