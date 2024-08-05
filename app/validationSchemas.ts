@@ -1,3 +1,4 @@
+import { Status } from "@prisma/client";
 import { z } from "zod";
 
 export const issueSchema = z.object({
@@ -17,4 +18,5 @@ export const patchIssueSchema = z.object({
     .max(255)
     .optional()
     .nullable(),
+  status: z.nativeEnum(Status).optional().nullable(),
 });
